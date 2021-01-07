@@ -2,8 +2,6 @@ package pl.igormaculewicz.weatheraverager.weather.service;
 
 import pl.igormaculewicz.weatheraverager.weather.model.WeatherSummary;
 
-import java.time.LocalDate;
-
 public interface WeatherService {
 
     /**
