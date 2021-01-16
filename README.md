@@ -1,4 +1,4 @@
-# Weather api merger
+# Weather apis aggregator
 Project for passing exercise on studies
 
 ### How to run
