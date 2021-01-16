@@ -1,4 +1,4 @@
-# Weather-averager
+# Weather api merger
 Project for passing exercise on studies
 
 ### How to run
@@ -13,13 +13,24 @@ To build and then run application, you have to simply use given command in worki
 help
 ```
 
-##### To get weather for given location, type:
+#### Weather summary
+##### Pattern:
 ```shell script
-weather-avg <location>
+http://localhost:8080/summary/city/<city>
 ```
-For example: 
+##### Example: 
 ```shell script
-weather-avg Szczecin
+http://localhost:8080/summary/city/Koszalin
+```
+
+#### Averaged weather
+##### Pattern:
+```shell script
+http://localhost:8080/average/city/<city>
+```
+##### Example: 
+```shell script
+http://localhost:8080/average/city/Koszalin
 ```
 
 ### FAQ

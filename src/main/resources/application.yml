@@ -1,5 +1,14 @@
+spring:
+  profiles:
+    active: local
+
 weather:
-  weatherstack:
-    api-key: d5bb8399a303dffc8e81504fa90df191
-  openweathermap:
-    api-key: 9c29b7e63ad7fa945825644773f7b283
+  services:
+    weatherstack:
+      label: Weatherstack
+      base-url: http://api.weatherstack.com
+      api-key: <secret>
+    openweathermap:
+      label: Open weather map
+      base-url: http://api.openweathermap.org
+      api-key: <secret>
