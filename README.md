@@ -14,6 +14,7 @@ help
 ```
 
 #### Weather summary
+##### By City
 ##### Pattern:
 ```shell script
 http://localhost:8080/summary/city/<city>
@@ -22,8 +23,15 @@ http://localhost:8080/summary/city/<city>
 ```shell script
 http://localhost:8080/summary/city/Koszalin
 ```
+##### By longitude and latitude
+##### Pattern:
+```shell script
+http://localhost:8080/summary/location/lat/{lat}/lng/{lng}
+```
+
 
 #### Averaged weather
+##### By City
 ##### Pattern:
 ```shell script
 http://localhost:8080/average/city/<city>
@@ -31,6 +39,12 @@ http://localhost:8080/average/city/<city>
 ##### Example: 
 ```shell script
 http://localhost:8080/average/city/Koszalin
+```
+
+##### By longitude and latitude
+##### Pattern:
+```shell script
+http://localhost:8080/average/location/lat/{lat}/lng/{lng}
 ```
 
 ### FAQ
