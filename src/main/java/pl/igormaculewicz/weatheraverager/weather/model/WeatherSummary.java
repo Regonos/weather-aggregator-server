@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class WeatherSummary {
-    private final Double temperature;
-    private final Double pressure;
-    private final Double humidity;
+    private final Number temperature;
+    private final Number pressure;
+    private final Number humidity;
 }

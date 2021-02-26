@@ -22,7 +22,7 @@ import java.util.Objects;
 public class WeatherstackService implements WeatherService {
 
     private static final String SERVICE_NAME = "weatherstack";
-    private static final String CURRENT_WEATHER_URL_FORMAT = "/current?access_key=%s&query=%s";
+    private static final String CURRENT_WEATHER_FOR_CITY_URL_FORMAT = "/current?access_key=%s&query=%s";
 
     private final WeatherServiceConfiguration configuration;
     private final RestTemplate restTemplate;
@@ -38,25 +38,45 @@ public class WeatherstackService implements WeatherService {
      */
     @Override
     public LabeledWeatherSummary getPresentWeatherForCity(String city) {
-
         String response = restTemplate.getForObject(assembleUrlForCity(city), String.class);
 
+        return handleResponse(response);
+    }
+
+    @Override
+    public LabeledWeatherSummary getPresentWeatherForLocation(double lat, double lng) {
+        String response = restTemplate.getForObject(assembleUrlForLocation(lat, lng), String.class);
+
+        return handleResponse(response);
+    }
+
+    private LabeledWeatherSummary handleResponse(String response) {
         if (Objects.isNull(JsonUtils.findRecursively(response, "current"))) {
             log.error("Skipping Weatherstack service because cannot get metrics!");
             return null;
         }
 
-        Integer temperature = JsonUtils.findRecursively(response, "current.temperature");
-        Integer pressure = JsonUtils.findRecursively(response, "current.pressure");
-        Integer humidity = JsonUtils.findRecursively(response, "current.humidity");
+        Number temperature = JsonUtils.findRecursively(response, "current.temperature");
+        Number pressure = JsonUtils.findRecursively(response, "current.pressure");
+        Number humidity = JsonUtils.findRecursively(response, "current.humidity");
 
         return LabeledWeatherSummary.builder()
                 .label(configuration.getLabel())
-                .summary(new WeatherSummary(temperature.doubleValue(), pressure.doubleValue(), humidity.doubleValue()))
+                .summary(new WeatherSummary(temperature, pressure, humidity))
                 .build();
     }
 
     private String assembleUrlForCity(String location) {
-        return String.format(configuration.getBaseUrl() + CURRENT_WEATHER_URL_FORMAT, configuration.getApiKey(), location);
+        return assembleUrl(location);
+    }
+
+    private String assembleUrlForLocation(double lat, double lng) {
+        String query = String.join(",", String.valueOf(lat), String.valueOf(lng));
+
+        return assembleUrl(query);
+    }
+
+    private String assembleUrl(String location) {
+        return String.format(configuration.getBaseUrl() + CURRENT_WEATHER_FOR_CITY_URL_FORMAT, configuration.getApiKey(), location);
     }
 }

@@ -11,4 +11,6 @@ public interface WeatherService {
      * @return weather summary.
      */
     LabeledWeatherSummary getPresentWeatherForCity(String city);
+
+    LabeledWeatherSummary getPresentWeatherForLocation(double lat, double lng);
 }

@@ -24,7 +24,8 @@ import java.util.Objects;
 public class OpenWeatherMapService implements WeatherService {
 
     private static final String SERVICE_NAME = "openweathermap";
-    private static final String CURRENT_WEATHER_URL_FORMAT = "/data/2.5/weather?appid=%s&q=%s&units=metric";
+    private static final String CURRENT_WEATHER_FOR_CITY_URL_FORMAT = "/data/2.5/weather?appid=%s&q=%s&units=metric";
+    private static final String CURRENT_WEATHER_FOR_LOCATION_URL_FORMAT = "/data/2.5/weather?appid=%s&lat=%s&lon=%s&units=metric";
 
     private final WeatherServiceConfiguration configuration;
     private final RestTemplate restTemplate;
@@ -48,17 +49,34 @@ public class OpenWeatherMapService implements WeatherService {
             return null;
         }
 
-        Double temperature = JsonUtils.findRecursively(response, "main.temp");
-        Integer pressure = JsonUtils.findRecursively(response, "main.pressure");
-        Integer humidity = JsonUtils.findRecursively(response, "main.humidity");
+        return handleResponse(response);
+    }
+
+    @Override
+    public LabeledWeatherSummary getPresentWeatherForLocation(double lat, double lng) {
+
+        String response = restTemplate.getForObject(assembleUrlForLocation(lat, lng), String.class);
+
+        return handleResponse(response);
+    }
+
+    private LabeledWeatherSummary handleResponse(String response) {
+
+        Number temperature = JsonUtils.findRecursively(response, "main.temp");
+        Number pressure = JsonUtils.findRecursively(response, "main.pressure");
+        Number humidity = JsonUtils.findRecursively(response, "main.humidity");
 
         return LabeledWeatherSummary.builder()
                 .label(configuration.getLabel())
-                .summary(new WeatherSummary(temperature, pressure.doubleValue(), humidity.doubleValue()))
+                .summary(new WeatherSummary(temperature, pressure, humidity))
                 .build();
     }
 
     private String assembleUrlForCity(String location) {
-        return String.format(configuration.getBaseUrl() + CURRENT_WEATHER_URL_FORMAT, configuration.getApiKey(), location);
+        return String.format(configuration.getBaseUrl() + CURRENT_WEATHER_FOR_CITY_URL_FORMAT, configuration.getApiKey(), location);
+    }
+
+    private String assembleUrlForLocation(double lat, double lng) {
+        return String.format(configuration.getBaseUrl() + CURRENT_WEATHER_FOR_LOCATION_URL_FORMAT, configuration.getApiKey(), lat, lng);
     }
 }

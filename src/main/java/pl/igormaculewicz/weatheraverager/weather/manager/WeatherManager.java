@@ -3,7 +3,6 @@ package pl.igormaculewicz.weatheraverager.weather.manager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.igormaculewicz.weatheraverager.weather.model.LabeledWeatherSummary;
-import pl.igormaculewicz.weatheraverager.weather.model.WeatherSummary;
 import pl.igormaculewicz.weatheraverager.weather.service.WeatherService;
 
 import java.util.List;
@@ -17,6 +16,13 @@ public class WeatherManager {
 
     private final Set<WeatherService> services;
 
+    public List<LabeledWeatherSummary> getSummaryForLocation(double lat, double lng) {
+        return services.stream()
+                .map(service -> service.getPresentWeatherForLocation(lat, lng))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     /**
      * Method that realizes functionality of getting weather summary for given city.
      *
@@ -28,24 +34,5 @@ public class WeatherManager {
                 .map(service -> service.getPresentWeatherForCity(city))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableList());
-    }
-
-    /**
-     * Method that realizes functionality of getting averaged weather for given city.
-     *
-     * @param city given city
-     * @return averaged weather for given city.
-     */
-    public WeatherSummary getAveragedForCity(String city) {
-
-        List<WeatherSummary> summaries = getSummaryForCity(city).stream()
-                .map(LabeledWeatherSummary::getSummary)
-                .collect(Collectors.toUnmodifiableList());
-
-        Double temperatureSummary = summaries.stream().mapToDouble(WeatherSummary::getTemperature).average().orElse(Double.MIN_VALUE);
-        Double pressureSummary = summaries.stream().mapToDouble(WeatherSummary::getPressure).average().orElse(Double.MIN_VALUE);
-        Double humiditySummary = summaries.stream().mapToDouble(WeatherSummary::getHumidity).average().orElse(Double.MIN_VALUE);
-
-        return new WeatherSummary(temperatureSummary, pressureSummary, humiditySummary);
     }
 }
