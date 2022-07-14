@@ -2,6 +2,7 @@ package pl.igormaculewicz.weatheraverager.api.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Slf4j
 @CrossOrigin
+@Profile("!mock")
 @RequiredArgsConstructor
 @RestController("weather")
 public class WeatherResource {

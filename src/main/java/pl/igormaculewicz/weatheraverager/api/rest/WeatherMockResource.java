@@ -2,9 +2,11 @@ package pl.igormaculewicz.weatheraverager.api.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import pl.igormaculewicz.weatheraverager.weather.manager.WeatherManager;
 import pl.igormaculewicz.weatheraverager.weather.model.LabeledWeatherSummary;
 import pl.igormaculewicz.weatheraverager.weather.model.WeatherSummary;
@@ -14,8 +16,9 @@ import java.util.List;
 
 @Slf4j
 @CrossOrigin
+@Profile("mock")
 @RequiredArgsConstructor
-//@RestController("weather")
+@RestController("weather")
 public class WeatherMockResource {
 
     private final WeatherManager manager;
@@ -34,25 +37,25 @@ public class WeatherMockResource {
                 LabeledWeatherSummary.builder().label("service1")
                         .summary(weatherSummary)
                         .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
-                LabeledWeatherSummary.builder().label("service1")
-                        .summary(weatherSummary)
-                        .build(),
                 LabeledWeatherSummary.builder().label("service2")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service3")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service4")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service5")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service6")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service7")
+                        .summary(weatherSummary)
+                        .build(),
+                LabeledWeatherSummary.builder().label("service8")
                         .summary(weatherSummary)
                         .build()
         );
